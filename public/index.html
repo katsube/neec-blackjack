@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charaset="utf8">
+  <title>初めてのSocket.io</title>
+  <style>
+    #log-my{
+      width: 300px;
+      height: 210px;
+      background-color: beige;
+    }
+    #log-enemy{
+      width: 300px;
+      height: 210px;
+      background-color: hotpink;
+    }
+  </style>
+</head>
+<body>
+
+<form>
+  <button id="btn2" type="button">カードを2枚もらう</button>
+  <button id="btn-enter" type="button">決定</button>
+</form>
+
+<div id="log-my"></div>
+<div id="log-enemy"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  let MYTOKEN = null;
+  let MYCARD = null;
+
+  const btn = document.querySelector('#btn2')
+  btn.addEventListener('click', ()=>{
+    socket.emit('drawcard2', {token:MYTOKEN})
+  })
+
+  const btnEnter = document.querySelector('#btn-enter')
+  btnEnter.addEventListener('click', ()=>{
+    socket.emit('calcScore', {token:MYTOKEN, card:MYCARD})
+  })
+
+  socket.on('token', (token)=>{
+    MYTOKEN = token
+  })
+  socket.on('member-drawcard2', (message)=>{
+    let html = '';
+
+    if( message.token === MYTOKEN ){
+      const log = document.querySelector('#log-my');
+      let card2 = []
+      for( let i=0; i<message.card.length; i++ ){
+        const filename = message.card[i][0] + '_' + message.card[i][1] +'.png'
+        html += '<img src="/image/' + filename + '">'
+        card2.push(message.card[i][1])
+      }
+      log.innerHTML = html
+      MYCARD = card2
+    }
+    else{
+      const log = document.querySelector('#log-enemy');
+      html = '<img src="/image/back.png"><img src="/image/back.png">'
+      log.innerHTML = html
+    }
+  })
+
+  socket.on('your-score', (data)=>{
+    // alert(data.score)
+  })
+
+  socket.on('result', (status)=>{
+    if( status === 1 ){
+      alert('Win')
+    }
+    else{
+      alert('Loose')
+    }
+  })
+</script>
+</body>
+</html>
