@@ -13,3 +13,12 @@ $ npm install
 ```shellsession
 $ node serve.js
 ```
+
+
+## 履歴
+<dl>
+  <dt><a href="https://github.com/katsube/neec-blackjack/releases/tag/v0.0.2">v0.0.2</a></dt>
+  <dd>チート対策版（2021-12-13）</dd>
+  <dt><a href="https://github.com/katsube/neec-blackjack/releases/tag/v0.0.1">v0.0.1</a></dt>
+  <dd>チート可能版（2021-12-06）</dd>
+</dl>

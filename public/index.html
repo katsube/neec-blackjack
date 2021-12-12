@@ -30,7 +30,6 @@
 <script>
   const socket = io();
   let MYTOKEN = null;
-  let MYCARD = null;
 
   const btn = document.querySelector('#btn2')
   btn.addEventListener('click', ()=>{
@@ -39,7 +38,7 @@
 
   const btnEnter = document.querySelector('#btn-enter')
   btnEnter.addEventListener('click', ()=>{
-    socket.emit('calcScore', {token:MYTOKEN, card:MYCARD})
+    socket.emit('calcScore', {token:MYTOKEN})  // v0.0.2 自分の手札は渡さない
   })
 
   socket.on('token', (token)=>{
@@ -50,14 +49,11 @@
 
     if( message.token === MYTOKEN ){
       const log = document.querySelector('#log-my');
-      let card2 = []
       for( let i=0; i<message.card.length; i++ ){
         const filename = message.card[i][0] + '_' + message.card[i][1] +'.png'
         html += '<img src="/image/' + filename + '">'
-        card2.push(message.card[i][1])
       }
       log.innerHTML = html
-      MYCARD = card2
     }
     else{
       const log = document.querySelector('#log-enemy');
