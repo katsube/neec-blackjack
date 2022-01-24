@@ -77,7 +77,7 @@ io.on('connection', (socket)=>{
     const card = trump.drawCard(CARD_STOCK, 2)
 
     // 内部の変数にカード情報を保存
-    USER_CARD[message.token] = [card[0][0], card[0][1]]
+    USER_CARD[message.token] = [card[0][1], card[1][1]]
   
     // 本人に送る
     io.to(socket.id).emit('member-drawcard2', {token:message.token, card:card})
